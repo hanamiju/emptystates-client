@@ -11,7 +11,7 @@
             </div>
             <div class="emptystate-column-inspector">
                 <div class="container app-summary-container">
-                    <img :src="baseUrl + app.iconImage.url" class="app-icon"/>
+                    <img :src="baseUrl + app.platforms[0].iconImage.url" class="app-icon"/>
                     <div class="app-summary">
                         <h1 class="app-summary-title">{{ app.name }}</h1>
                         <p class="app-summary-description">{{ app.description }}</p>
@@ -20,7 +20,7 @@
                 <ul class="app-info">
                     <li class="container">
                         <p class="subject">App Version: </p>
-                        <p class="content">v{{ emptystate.version }}</p>
+                        <p class="content">v{{ emptystate.name }}</p>
                     </li>
                     <li class="container">
                         <p class="subject">Category: </p>
@@ -206,20 +206,21 @@ export default {
                 id
                 name
               }
-              iconImage {
-                url
-              }
-              emptystates {
+              platforms {
                 id
-                version
-                isCurrent
-                screenshots {
-                  id
-                  name
-                  image {
-                    url
+                iconImage {
+                  url
+                }
+                versions {
+                  emptystates {
+                    id
+                    image {
+                      url
+                    }
                     name
                   }
+                  name
+                  isCurrent
                 }
               }
             }
@@ -228,22 +229,23 @@ export default {
       }
     })
     store.commit('emptystates/setApp', response.data.app)
-    response.data.app.emptystates.forEach(emptystate => {
-        if (emptystate.isCurrent) {
+    response.data.app.platforms[0].versions.forEach(version => {
+                console.log('hello!!!')
+        if (version.isCurrent) {
             store.commit('emptystates/setEmptyState', {
-                id: emptystate.id,
-                ...emptystate
+                id: version.id,
+                ...version
             })
-            if (emptystate.screenshots[0] != null) {
+            if (version.emptystates[0] != null) {
                 store.commit('emptystates/selectScreenshot', {
-                    id: emptystate.screenshots[0].id,
-                    ...emptystate.screenshots[0]
+                    id: version.emptystates[0].id,
+                    ...version.emptystates[0]
                 })
             }
-            emptystate.screenshots.forEach(screenshot => {
+            version.emptystates.forEach(emptystate => {
                 store.commit('emptystates/addScreenshot', {
-                    id: screenshot.id,
-                    ...screenshot
+                    id: emptystate.id,
+                    ...emptystate
                 })
             })
         }

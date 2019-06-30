@@ -4,14 +4,14 @@
       <li v-for="app in apps" :key="app.id" class="app-container">
         <router-link :to="{ name: 'apps-id', params: { id: app.id }}" tag="a">
           <div class="container">
-            <img :src="baseUrl + app.iconImage.url" class="app-icon"/>
+            <img :src="baseUrl + app.platforms[0].iconImage.url" class="app-icon"/>
             <div class="app-summary">
               <p class="app-summary-title">{{ app.name }}</p>
               <p class="app-summary-description">{{ app.description }}</p>
             </div>
           </div>
           <div class="app-summary-thumbnail">
-            <img :src="baseUrl + app.emptystates[0].screenshots[0].image.url" class="dispray-thumbnail"/>
+            <img :src="baseUrl + app.platforms[0].versions[0].emptystates[0].image.url" class="dispray-thumbnail"/>
           </div>
         </router-link>
       </li>
@@ -56,21 +56,26 @@ export default {
               id
               name
               description
-              iconImage {
-                url
-              }
-              emptystates {
+              platforms {
                 id
-                version
-                isCurrent
-                screenshots {
-                  id
-                  name
-                  image {
-                    url
+                iconImage {
+                  url
+                }
+                versions {
+                  emptystates {
+                    id
+                    image {
+                      url
+                    }
                     name
                   }
+                  name
                 }
+                storeUrl
+              }
+              category {
+                id
+                name
               }
             }
           }`

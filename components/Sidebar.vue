@@ -115,7 +115,7 @@ export default {
         }
   },
   mounted() {
-    this.$store.dispatch('categories/getCategories')  
+    this.$store.dispatch('categories/getCategories')
   }
 }
 
